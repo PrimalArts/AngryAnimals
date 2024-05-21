@@ -21,6 +21,7 @@ var _state: ANIMAL_STATE = ANIMAL_STATE.READY
 @onready var strecth_sound = $StrecthSound
 @onready var arrow = $Arrow
 @onready var launch_sound = $LaunchSound
+@onready var animation_player = $AnimationPlayer
 
 func _ready():
 	_arrow_scale_x = arrow.scale.x
@@ -51,10 +52,18 @@ func set_drag():
 	_drag_start = get_global_mouse_position()
 	arrow.show()
 
+func start_rotation(imp: Vector2):
+	var perc = imp.length() / IMPULSE_MULT
+	animation_player.speed_scale = perc * 0.1
+	animation_player.play("rotation")
+
 func set_release():
 	arrow.hide()
 	freeze = false
-	apply_central_impulse(get_impulse())
+	var imp = get_impulse()
+	start_rotation(imp)
+	apply_central_impulse(imp)
+	
 	launch_sound.play()
 	
 func set_new_state(new_state: ANIMAL_STATE) -> void:
