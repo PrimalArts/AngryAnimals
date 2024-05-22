@@ -46,7 +46,6 @@ shape = SubResource("CircleShape2D_njuy6")
 position = Vector2(787, 459)
 input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_4lcn1")
-freeze = true
 script = ExtResource("3_v7fq5")
 
 [node name="Sprite2D" type="Sprite2D" parent="Bird2"]

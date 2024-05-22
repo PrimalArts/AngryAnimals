@@ -8,7 +8,7 @@
 script = ExtResource("1_xcg7c")
 
 [node name="AnimalStart" type="Marker2D" parent="."]
-position = Vector2(131, 476)
+position = Vector2(62, 263)
 scale = Vector2(1.2, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -14,6 +14,7 @@ var _drag_start: Vector2 = Vector2.ZERO
 var _dragged_vector: Vector2 = Vector2.ZERO
 var _last_dragged_vector: Vector2 = Vector2.ZERO
 var _arrow_scale_x: float = 0.0
+var _last_colision_count: int = 0
 
 var _state: ANIMAL_STATE = ANIMAL_STATE.READY
 
@@ -21,12 +22,20 @@ var _state: ANIMAL_STATE = ANIMAL_STATE.READY
 @onready var strecth_sound = $StrecthSound
 @onready var arrow = $Arrow
 @onready var launch_sound = $LaunchSound
+@onready var kick_sound = $KickSound
+
 @onready var animation_player = $AnimationPlayer
 
 func _ready():
 	_arrow_scale_x = arrow.scale.x
 	arrow.hide()
 	_start = position
+
+
+func reset():
+	_state = ANIMAL_STATE.READY
+	_start = position
+	animation_player.stop()
 
 func _physics_process(delta):
 	
@@ -62,9 +71,12 @@ func set_release():
 	freeze = false
 	var imp = get_impulse()
 	start_rotation(imp)
+	
 	apply_central_impulse(imp)
 	
 	launch_sound.play()
+	
+	SignalManager.on_attempt_made.emit()
 	
 func set_new_state(new_state: ANIMAL_STATE) -> void:
 	_state = new_state
@@ -123,10 +135,20 @@ func update_drag():
 	drag_in_limits()
 	scale_arrow()
 	
+func update_flight():
+	play_colision()
+
+func play_colision():
+	if (_last_colision_count == 0 and get_contact_count() > 0 and !kick_sound.playing):
+		kick_sound.play()
+	_last_colision_count = get_contact_count()
+	
 func update(delta: float) -> void:
 	match  _state:
 		ANIMAL_STATE.DRAG:
 			update_drag()
+		ANIMAL_STATE.RELEASE:
+			update_flight()
 		
 
 
@@ -136,3 +158,13 @@ func _on_input_event(viewport, event: InputEvent, shape_idx):
 		
 		
 	
+
+
+func _on_sleeping_state_changed():
+	if sleeping:
+		var cb = get_colliding_bodies()
+		if cb.size() > 0:
+			cb[0].die()
+		animation_player.stop()
+		call_deferred("_die")
+		

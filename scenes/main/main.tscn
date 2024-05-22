@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlruq7ao3yr3m"]
+
+[ext_resource type="Texture2D" uid="uid://ckth7tyg6qu28" path="res://assets/env/MainBG.png" id="1_evvhi"]
+[ext_resource type="PackedScene" uid="uid://cskuwspuowl17" path="res://scenes/level_button/level_button.tscn" id="2_x0t1t"]
+[ext_resource type="FontFile" uid="uid://cjxulfyo6yuem" path="res://assets/fonts/LuckiestGuy-Regular.ttf" id="3_euxb0"]
+[ext_resource type="AudioStream" uid="uid://dhy1jeml6vxf2" path="res://assets/audio/birdsong.wav" id="4_yowv1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ggp7v"]
+font = ExtResource("3_euxb0")
+font_size = 92
+font_color = Color(0.4, 1, 1, 1)
+shadow_size = 7
+shadow_color = Color(0, 0, 0, 0.592157)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -58.0
+offset_top = -47.5
+offset_right = 58.0
+offset_bottom = 47.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_evvhi")
+
+[node name="HB" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -182.0
+offset_top = -50.0
+offset_right = 182.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="LevelButton" parent="HB" instance=ExtResource("2_x0t1t")]
+layout_mode = 2
+
+[node name="LevelButton2" parent="HB" instance=ExtResource("2_x0t1t")]
+layout_mode = 2
+level_number = 2
+
+[node name="LevelButton3" parent="HB" instance=ExtResource("2_x0t1t")]
+layout_mode = 2
+level_number = 3
+
+[node name="MC" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -341.0
+offset_right = 341.0
+offset_bottom = 100.0
+grow_horizontal = 2
+rotation = 0.0523599
+theme_override_constants/margin_top = 24
+
+[node name="Title" type="Label" parent="MC"]
+layout_mode = 2
+text = "Angry Animals"
+label_settings = SubResource("LabelSettings_ggp7v")
+horizontal_alignment = 1
+
+[node name="ThemeSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_yowv1")
+autoplay = true
